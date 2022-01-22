@@ -1,0 +1,24 @@
+rules:
+- id: math-random
+  pattern-either:
+    - patterns:
+      - pattern-inside: |
+          import $IMPORT "math/rand"
+          ...
+      - pattern-either:
+        - pattern: $IMPORT.Int()
+        - pattern: $IMPORT.Read(...)
+    - patterns:
+      - pattern-inside: |
+          import "math/rand"
+          ...
+      - pattern-not-inside: |
+          import "crypto/rand"
+          ...
+      - pattern-either:
+        - pattern: rand.Int()
+        - pattern: rand.Read(...)
+  message: |
+      Use of weak random number generator (math/rand instead of crypto/rand)
+  languages: [go]
+  severity: WARNING

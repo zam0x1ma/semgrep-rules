@@ -1,0 +1,22 @@
+rules:
+- id: os-command
+  pattern-either:
+    - patterns:
+      - pattern-inside: |
+          import "os/exec"
+          ...
+      - pattern-either:
+        - pattern: exec.Command(...)
+        - pattern: exec.Cmd{...}
+        - pattern: exec.CommandContext(...)
+    - patterns:
+      - pattern-inside: |
+          import "syscall"
+          ...
+      - pattern-either:
+        - pattern: syscall.Exec(...)
+        - pattern: syscall.ForkExec(...)
+  message: |
+      OS command execution detected
+  languages: [go]
+  severity: WARNING
