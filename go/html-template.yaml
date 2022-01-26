@@ -1,0 +1,11 @@
+rules:
+- id: html-template
+  patterns: 
+    - pattern-inside: |
+        import "html/template"
+        ...
+    - pattern: template.HTML(...)
+  message: |
+       template.HTML() does not escape HTML content. If user data can reach this template, you may have a XSS vulnerability.
+  languages: [go]
+  severity: WARNING
